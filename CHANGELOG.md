@@ -1,10 +1,15 @@
 ## CommandCollection ##
 
 (c) 2013 phpManufaktur by Ralf Hertsch
+(c) 2015 phpManufakturHeirs
 
 MIT License (MIT) - <http://www.opensource.org/licenses/MIT>
 
-kitFramework - <https://kit2.phpmanufaktur.de>
+kitFramework - <http://phpmanufaktur.info>
+
+**0.41** - 2015-07-08
+
+* Comments: fixed handling of passed comments (not shown)
 
 **0.40** - 2014-09-14
 

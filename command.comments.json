@@ -2,7 +2,7 @@
   "command":"Comments",
   "vendor": {
     "name":"phpManufaktur",
-    "url":"https://phpmanufaktur.de"
+    "url":"http://phpmanufaktur.info"
     },
   "name": {
     "en":"Enable Comments for any article or extension"
@@ -21,17 +21,17 @@
   },
   "info": {
     "en": {
-      "link":"https://kit2.phpmanufaktur.de"
+      "link":"http://phpmanufaktur.info"
     }
   },
   "issues": {
     "en": {
-      "link":"https://github.com/phpManufaktur/kfCommandCollection/issues"
+      "link":"https://github.com/phpManufakturHeirs/kfCommandCollection/issues"
     }
   },
   "support": {
     "en": {
-      "link":"https://support.phpmanufaktur.de"
+      "link":"http://phpmanufaktur.info"
     }
   }
 }

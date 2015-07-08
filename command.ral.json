@@ -2,7 +2,7 @@
   "command":"RAL",
   "vendor": {
     "name":"phpManufaktur",
-    "url":"https://phpmanufaktur.de"
+    "url":"http://phpmanufaktur.info"
     },
   "name": {
     "en":"RAL color palette",
@@ -23,7 +23,7 @@
   },
   "info": {
     "en": {
-      "link":"https://kit2.phpmanufaktur.de"
+      "link":"http://phpmanufaktur.info"
     }
   },
   "issues": {
@@ -33,7 +33,7 @@
   },
   "support": {
     "en": {
-      "link":"https://support.phpmanufaktur.de"
+      "link":"http://phpmanufaktur.info"
     }
   }
 }

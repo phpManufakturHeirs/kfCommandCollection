@@ -3,8 +3,8 @@
 /**
  * CommandCollection
  *
- * @author Team phpManufaktur <team@phpmanufaktur.de>
- * @link https://kit2.phpmanufaktur.de/CommandCollection
+ * @author Team phpManufaktur <team@phpmanufaktur.info>
+ * @link http://phpmanufaktur.info/CommandCollection
  * @copyright 2014 Ralf Hertsch <ralf.hertsch@phpmanufaktur.de>
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
@@ -78,8 +78,9 @@ EOD;
     public function selectPassTo($identifier_type_name, $identifier_type_id)
     {
         try {
-            $SQL = "SELECT `pass_to_identifier_id` FROM `".self::$table_name."` WHERE ".
-                "`identifier_type_name`='$identifier_type_name' AND `identifier_type_id`='$identifier_type_id'";
+            $SQL = "SELECT `identifier_type_id` FROM `".self::$table_name."` WHERE ".
+                "`identifier_type_name`='$identifier_type_name' AND `pass_to_identifier_id`='$identifier_type_id'";
+            //$this->app['monolog']->addDebug($SQL);
             $pass_to = $this->app['db']->fetchColumn($SQL);
             return ($pass_to > 0) ? $pass_to : false;
         } catch (\Doctrine\DBAL\DBALException $e) {

@@ -5,37 +5,37 @@
   "group":"phpManufaktur",
   "vendor":{
       "name":"phpManufaktur",
-      "url":"https:\/\/phpmanufaktur.de",
-      "mail":"team@phpmanufaktur.de",
+      "url":"http:\/\/phpmanufaktur.info",
+      "mail":"team@phpmanufaktur.info",
       "address":{
-          "street":"Stockholmer Straße 31",
-          "zip":"13359",
+          "street":"Reginhardstraße 34",
+          "zip":"13409",
           "city":"Berlin",
           "country":"Germany"
       },
-      "phone":"+49 30 68813647"
+      "phone":"+49 30 499070-84"
   },
   "type":"library",
   "path":"\/extension\/phpmanufaktur\/phpManufaktur\/CommandCollection",
   "namespace":"phpManufaktur\\CommandCollection",
   "release":{
-    "number":"0.40",
-    "date":"2014-09-14",
+    "number":"0.41",
+    "date":"2015-07-08",
     "status":"beta",
-    "changelog":"https:\/\/github.com\/phpManufaktur\/kfCommandCollection\/blob\/master\/CHANGELOG.md"
+    "changelog":"https:\/\/github.com\/phpManufakturHeirs\/kfCommandCollection\/blob\/master\/CHANGELOG.md"
   },
   "description":{
     "en":{
       "title":"Collection of kitCommands for the kitFramework",
       "short":"A collection of usefull kitCommands for the kitFramework",
       "long":"A collection of usefull kitCommands for the kitFramework and for the parent Content Management System",
-      "url":"https:\/\/kit2.phpmanufaktur.de/CommandCollection"
+      "url":"https:\/\/phpmanufaktur.info/CommandCollection"
     },
     "de":{
       "title":"Sammlung von kitCommands für das kitFramework",
       "short":"Eine Sammlung von kitCommands für das kitFramework",
       "long":"Eine Sammlung von kitCommands für die übergeordneten Content Management Systeme. Das Paket enthält unter anderem: Comments (Kommentarfunktion für das CMS), ExcelRead (Excel Tabellen einlesen und formatiert ausgeben), LoremIpsum (Lorem Ipsum Generator), RAL (RAL Farbtabellen verwenden) und Rating (Bewertungsfunktion für Artikel und Anwendungen)",
-      "url":"https:\/\/kit2.phpmanufaktur.de/CommandCollection"
+      "url":"https:\/\/phpmanufaktur.info/CommandCollection"
     }
   },
   "require":{
@@ -63,15 +63,15 @@
   },
   "license": {
     "name":"MIT License",
-    "url":"https:\/\/github.com\/phpManufaktur\/kfCommandCollection\/raw\/master\/LICENSE.md"
+    "url":"https:\/\/github.com\/phpManufakturHeirs\/kfCommandCollection\/raw\/master\/LICENSE.md"
   },
   "download": {
     "availability":"public",
     "agreement":"free",
     "github":{
-      "organization":"phpManufaktur",
+      "organization":"phpManufakturHeirs",
       "repository":"kfCommandCollection"
     },
-    "url":"https:\/\/github.com\/phpManufaktur\/kfCommandCollection"
+    "url":"https:\/\/github.com\/phpManufakturHeirs\/kfCommandCollection"
   }
 }
