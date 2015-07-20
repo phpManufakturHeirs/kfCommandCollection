@@ -4,7 +4,7 @@
  * CommandCollection
  *
  * @author Team phpManufaktur <team@phpmanufaktur.info>
- * @link http://phpmanufaktur.info/CommandCollection
+ * @link http://www.phpmanufaktur.info/de/kitframework/erweiterungen/commandcollection.php
  * @copyright 2013 Ralf Hertsch <ralf.hertsch@phpmanufaktur.de>
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */

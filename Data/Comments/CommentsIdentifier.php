@@ -4,7 +4,7 @@
  * CommandCollection
  *
  * @author Team phpManufaktur <team@phpmanufaktur.info>
- * @link http://phpmanufaktur.info/CommandCollection
+ * @link http://www.phpmanufaktur.info/de/kitframework/erweiterungen/commandcollection.php
  * @copyright 2013 Ralf Hertsch <ralf.hertsch@phpmanufaktur.de>
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
@@ -108,7 +108,7 @@ EOD;
         try {
             $SQL = "SELECT * FROM `".self::$table_name."` WHERE `identifier_type_name`='$type_name' AND `identifier_type_id`='$type_id'";
             $result = $this->app['db']->fetchAssoc($SQL);
-            //$this->app['monolog']->addDebug('selectByTypeID() statement: '.$SQL, array(__METHOD__, __LINE__));
+            $this->app['monolog']->addDebug('>>> selectByTypeID() statement: '.$SQL, array(__METHOD__, __LINE__));
             return (isset($result['identifier_id'])) ? $result : false;
         } catch (\Doctrine\DBAL\DBALException $e) {
             throw new \Exception($e);
@@ -144,6 +144,7 @@ EOD;
     {
         try {
             $SQL = "SELECT * FROM `".self::$table_name."` WHERE `identifier_id`='$identifier_id'";
+            $this->app['monolog']->addDebug('>>> select() statement: '.$SQL, array(__METHOD__, __LINE__));
             $result = $this->app['db']->fetchAssoc($SQL);
             return (isset($result['identifier_id'])) ? $result : false;
         } catch (\Doctrine\DBAL\DBALException $e) {

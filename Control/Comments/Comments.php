@@ -4,7 +4,7 @@
  * CommandCollection
  *
  * @author Team phpManufaktur <team@phpmanufaktur.info>
- * @link http://phpmanufaktur.info/CommandCollection
+ * @link http://www.phpmanufaktur.info/de/kitframework/erweiterungen/commandcollection.php
  * @copyright 2013 Ralf Hertsch <ralf.hertsch@phpmanufaktur.de>
  * @license MIT License (MIT) http://www.opensource.org/licenses/MIT
  */
@@ -56,9 +56,11 @@ class Comments extends Basic
         // clear all messages
         $this->clearAlert();
 
+        // init comments
         $this->CommentsData = new CommentsData($app);
         $this->CommentsIdentifier = new CommentsIdentifier($app);
 
+        // load config
         $this->Configuration = new Configuration($app);
         self::$configuration = $this->Configuration->getConfiguration();
 
@@ -100,6 +102,7 @@ class Comments extends Basic
             }
         }
 
+        // check gravatar settings
         if (self::$configuration['gravatar']['enabled']) {
             $use_gravatar = (isset($params['gravatar']) && (($params['gravatar'] == '0') || (strtolower(trim($params['gravatar'])) == 'false'))) ? false : true;
         }
@@ -107,6 +110,7 @@ class Comments extends Basic
             $use_gravatar = false;
         }
 
+        // check rating settings
         if (self::$configuration['rating']['enabled']) {
             $use_rating = (isset($params['rating']) && (($params['rating'] == '0') || (strtolower(trim($params['rating'])) == 'false'))) ? false : true;
         }
@@ -189,6 +193,8 @@ class Comments extends Basic
             'message' => (isset($params['message'])) ? $params['message'] : ''
         );
 
+        // if there's no identifier for this type, create one
+        // this is for current (=direct) comments, not for passed ones
         if (false === (self::$identifier = $this->CommentsIdentifier->selectByTypeID(self::$parameter['type'], self::$parameter['id']))) {
             // create a new identifier
             if (in_array('IMMEDIATE', self::$parameter['publish'])) {
