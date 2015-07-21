@@ -15,6 +15,8 @@ use Silex\Application;
 use phpManufaktur\CommandCollection\Data\Rating\Rating as RatingData;
 use phpManufaktur\CommandCollection\Data\Rating\RatingIdentifier;
 use Carbon\Carbon;
+use phpManufaktur\CommandCollection\Data\Comments\CommentsPassed;
+use phpManufaktur\CommandCollection\Data\Comments\CommentsIdentifier;
 
 class Comments
 {
@@ -22,6 +24,7 @@ class Comments
     protected static $table_name = null;
     protected $RatingIdentifier = null;
     protected $RatingData = null;
+    protected static $maxdepth = 5; // avoid endless loops
 
     public function __construct(Application $app)
     {
@@ -153,9 +156,14 @@ EOD;
     public function selectComments($identifier_id, $parent=0, $gravatar=null, $rating=true)
     {
         try {
-            $SQL = "SELECT * FROM `".self::$table_name."` a LEFT JOIN `".self::$table_name."` ".
-                "b ON a.comment_id = b.comment_id WHERE a.comment_parent = '$parent'".
-                "AND a.identifier_id='$identifier_id' AND a.comment_status='CONFIRMED' ORDER BY a.comment_timestamp ASC";
+            $SQL = "SELECT * FROM `".self::$table_name."` a
+LEFT JOIN `".FRAMEWORK_TABLE_PREFIX."collection_comments_identifier` b
+ON a.`identifier_id`=b.`identifier_id`
+WHERE a.comment_parent = '$parent'
+AND b.identifier_id='$identifier_id'
+AND a.comment_status='CONFIRMED'
+ORDER BY a.comment_timestamp ASC";
+
             $results = $this->app['db']->fetchAll($SQL);
             $comments = array();
             foreach ($results as $result) {
@@ -184,6 +192,7 @@ EOD;
      */
     public function getThread($identifier_id, $gravatar=null, $rating=true)
     {
+        // direct comments
         $threads = $this->selectComments($identifier_id, 0, $gravatar, $rating);
 
         $result = array();
@@ -407,8 +416,10 @@ EOD;
     /**
      * Count the CONFIRMED comments for the given identifier type_name and type_id
      *
-     * @param string $type_name
-     * @param integer $type_id
+     * This only counts direct comments, not inherited ones!
+     *
+     * @param string $type_name    - for example 'EVENT'
+     * @param integer $type_id     - for example an event_id
      * @throws \Exception
      * @return integer
      */
@@ -417,7 +428,7 @@ EOD;
         try {
             $comments_tbl = self::$table_name;
             $comments_idf = FRAMEWORK_TABLE_PREFIX.'collection_comments_identifier';
-            $SQL = "SELECT COUNT(comment_id) FROM `$comments_tbl` ".
+            $SQL = "SELECT COUNT(`comment_id`) FROM `$comments_tbl` ".
                 "LEFT JOIN `$comments_idf` ON `$comments_idf`.`identifier_id`=`$comments_tbl`.`identifier_id` ".
                 "WHERE `identifier_type_name`='$type_name' AND `identifier_type_id`='$type_id' AND ".
                 "`comment_status`='CONFIRMED'";
@@ -426,4 +437,26 @@ EOD;
             throw new \Exception($e);
         }
     }
+
+    /**
+     *
+     * @access public
+     * @return
+     **/
+    public function countPassedComments($type_name,$id)
+    {
+        // get the list of inherited comments (passed from other events)
+        $CommentsPassed     = new CommentsPassed($this->app);
+        $check_id           = $id;
+        $d                  = 0;
+        $count              = 0;
+        while (false !== ($passed_id = $CommentsPassed->selectPassTo($type_name, $check_id))) {
+            if ($d >= self::$maxdepth) break; // avoid endless loops
+            $count += $this->countComments($type_name,$passed_id);
+            $check_id = $passed_id;
+            $d++;
+        }
+        return $count;
+    }   // end function countPassedComments($type_name,$type_id)()
+    
 }

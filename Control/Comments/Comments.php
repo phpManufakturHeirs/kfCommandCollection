@@ -176,10 +176,23 @@ class Comments extends Basic
 
         $type = (isset($params['type']) && !empty($params['type'])) ? strtoupper($params['type']) : 'PAGE';
 
-        // check if the ID is passed to another ID ...
+        // for events:
+        // -> $type : EVENT
+        // -> $id   : event_id
+
+//*******************************************************************************
+
+        // get the list of inherited comments (passed from other events)
         $CommentsPassed = new CommentsPassed($app);
-        if (false !== ($passed_id = $CommentsPassed->selectPassTo($type, $id))) {
-            $id = $passed_id;
+        $inherited_ids = array();
+        $check_id = $id;
+        $d=0;
+        while (false !== ($passed_id = $CommentsPassed->selectPassTo($type, $check_id))) {
+            if ($d >= 5) break; // avoid endless loops
+            $c_ident = $this->CommentsIdentifier->selectByTypeID($type,$passed_id);
+            $inherited_ids[] = $c_ident['identifier_id'];
+            $check_id = $passed_id;
+            $d++;
         }
 
         // check the parameters and set defaults
@@ -190,7 +203,8 @@ class Comments extends Basic
             'publish' => $publish,
             'gravatar' => $use_gravatar,
             'rating' => $use_rating,
-            'message' => (isset($params['message'])) ? $params['message'] : ''
+            'message' => (isset($params['message'])) ? $params['message'] : '',
+            'inherited_comments' => $inherited_ids,
         );
 
         // if there's no identifier for this type, create one
@@ -222,6 +236,8 @@ class Comments extends Basic
             self::$identifier = $this->CommentsIdentifier->select(self::$identifier_id);
         }
         self::$identifier_id = self::$identifier['identifier_id'];
+
+//*******************************************************************************
 
         // check if the contact tag type 'COMMENTS' exists
         if (!$this->app['contact']->existsTagName('COMMENTS')) {
@@ -261,10 +277,12 @@ class Comments extends Basic
         ))
         ->add('comment_headline', 'text', array(
             'data' => isset($data['comment_headline']) ? $data['comment_headline'] : '',
+            'label' => 'Headline',
             'required' => true
         ))
         ->add('comment_content', 'textarea', array(
             'data' => isset($data['comment_content']) ? $data['comment_content'] : '',
+            'label' => 'Comment',
             'required' => true
         ))
         ->add('contact_id', 'hidden', array(
@@ -272,19 +290,22 @@ class Comments extends Basic
         ))
         ->add('contact_nick_name', 'text', array(
             'data' => isset($data['contact_nick_name']) ? $data['contact_nick_name'] : '',
+            'label' => 'Nickname',
             'required' => true
         ))
         ->add('contact_email', 'email', array(
             'data' => isset($data['contact_email']) ? $data['contact_email'] : '',
+            'label' => 'E-Mail',
             'required' => true
         ))
         ->add('contact_url', 'url', array(
             'data' => isset($data['contact_homepage']) ? $data['contact_homepage'] : '',
+            'label' => 'Homepage',
             'required' => false
         ))
         ->add('comment_update_info', 'checkbox', array(
             'required' => false,
-            'label' => 'Comment update info'
+            'label' => 'send email at new comment'
         ))
         ->getForm();
     }
@@ -337,6 +358,21 @@ class Comments extends Basic
         }
         $this->setRedirectActive(true);
 
+        // get direct comments (if any)
+        $comments = $this->CommentsData->getThread(self::$identifier_id, $this->Gravatar, self::$parameter['rating']);
+
+        // get inherited comments (if any)
+        if(isset(self::$parameter['inherited_comments']) && is_array(self::$parameter['inherited_comments']) && count(self::$parameter['inherited_comments'])) {
+            foreach(array_values(self::$parameter['inherited_comments']) as $identifier_id) {
+                $inherited = $this->CommentsData->getThread($identifier_id, $this->Gravatar, self::$parameter['rating']);
+                if(is_array($inherited) && count($inherited)) {
+                    foreach($inherited as $item) {
+                        array_push($comments,$item);
+                    }
+                }
+            }
+        }
+
         return $this->app['twig']->render($this->app['utils']->getTemplateFile(
             '@phpManufaktur/CommandCollection/Template/Comments',
             "comments.twig",
@@ -346,7 +382,7 @@ class Comments extends Basic
                 'configuration' => self::$configuration,
                 'basic' => $this->getBasicSettings(),
                 'form' => $form->createView(),
-                'thread' => $this->CommentsData->getThread(self::$identifier_id, $this->Gravatar, self::$parameter['rating'])
+                'thread' => $comments
             ));
     }
 
