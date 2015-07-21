@@ -19,8 +19,8 @@
   "path":"\/extension\/phpmanufaktur\/phpManufaktur\/CommandCollection",
   "namespace":"phpManufaktur\\CommandCollection",
   "release":{
-    "number":"0.41",
-    "date":"2015-07-08",
+    "number":"0.42",
+    "date":"2015-07-21",
     "status":"beta",
     "changelog":"https:\/\/github.com\/phpManufakturHeirs\/kfCommandCollection\/blob\/master\/CHANGELOG.md"
   },

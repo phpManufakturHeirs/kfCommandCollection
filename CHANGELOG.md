@@ -7,6 +7,10 @@ MIT License (MIT) - <http://www.opensource.org/licenses/MIT>
 
 kitFramework - <http://phpmanufaktur.info>
 
+**0.42** - 2015-07-21
+
+* Comments: Another fix for passed comments
+
 **0.41** - 2015-07-08
 
 * Comments: fixed handling of passed comments (not shown)
